@@ -51,6 +51,9 @@ flutter:
     - assets/images/AudioBible.Off.png
     - assets/images/MySettings.On.png
     - assets/images/MySettings.Off.png
+    - assets/json/books.json
+    - assets/json/bookid.json
+    - assets/json/audioBookId.json
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

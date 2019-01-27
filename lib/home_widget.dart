@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'placeholder_widget.dart';
+import 'lessons_widget.dart';
 import 'mybsf_widget.dart';
 
 class Home extends StatefulWidget {
@@ -10,7 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   static List<String> _pageTitle = [
     'BSF Lesson',
@@ -20,7 +21,7 @@ class _HomeState extends State<Home> {
   ];
 
   final List<Widget> _pages = [
-    PlaceholderWidget(Colors.white),
+    Lessons(),
     Mybsf(),
     PlaceholderWidget(Colors.white),
     PlaceholderWidget(Colors.white)
