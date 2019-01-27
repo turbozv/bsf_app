@@ -51,6 +51,8 @@ flutter:
     - assets/images/AudioBible.Off.png
     - assets/images/MySettings.On.png
     - assets/images/MySettings.Off.png
+    - assets/images/Materials.On.png
+    - assets/images/Materials.Off.png
     - assets/json/books.json
     - assets/json/bookid.json
     - assets/json/audioBookId.json
