@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'placeholder_widget.dart';
+import 'mybsf_widget.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   static List<String> _pageTitle = [
     'BSF Lesson',
@@ -20,24 +21,9 @@ class _HomeState extends State<Home> {
 
   final List<Widget> _pages = [
     PlaceholderWidget(Colors.white),
-    PlaceholderWidget(Colors.white),
+    Mybsf(),
     PlaceholderWidget(Colors.white),
     PlaceholderWidget(Colors.white)
-  ];
-
-  final List<BottomNavigationBarItem> _bottomNavigationBars = [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.list),
-      title: Text(_pageTitle[0]),
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.web),
-      title: Text(_pageTitle[1]),
-    ),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.audiotrack), title: Text(_pageTitle[2])),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.settings), title: Text(_pageTitle[3]))
   ];
 
   void onTabTapped(int index) {
@@ -45,6 +31,29 @@ class _HomeState extends State<Home> {
       print('currentIndex: $_currentIndex');
       _currentIndex = index;
     });
+  }
+
+  Image _getIcon(int index) {
+    String path = 'assets/images/';
+    switch (index) {
+      case 0:
+        path += 'Classes';
+        break;
+      case 1:
+        path += 'mybsf';
+        break;
+      case 2:
+        path += 'AudioBible';
+        break;
+      case 3:
+        path += 'MySettings';
+        break;
+      default:
+        return Image.asset('assets/images/icon.png', width: 30, height: 30);
+    }
+
+    path += '.' + (_currentIndex == index ? 'On' : 'Off') + '.png';
+    return Image.asset(path, width: 30, height: 30);
   }
 
   @override
@@ -66,7 +75,22 @@ class _HomeState extends State<Home> {
           onTap: onTabTapped,
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
-          items: _bottomNavigationBars,
+          items: [
+            BottomNavigationBarItem(
+              icon: _getIcon(0),
+              title: Text(_pageTitle[0]),
+            ),
+            BottomNavigationBarItem(
+              icon: _getIcon(1),
+              title: Text(_pageTitle[1]),
+            ),
+            BottomNavigationBarItem(
+              icon: _getIcon(2),
+              title: Text(_pageTitle[2])),
+            BottomNavigationBarItem(
+              icon: _getIcon(3),
+              title: Text(_pageTitle[3]))
+          ],
         ),
       ),
     );
