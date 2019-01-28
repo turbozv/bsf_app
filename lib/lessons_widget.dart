@@ -1,13 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
-Future<Map<String, dynamic>> parseJsonFromAssets(String assetsPath) async {
-  print('--- Parse json from: $assetsPath');
-  return rootBundle
-      .loadString(assetsPath)
-      .then((jsonStr) => jsonDecode(jsonStr));
-}
+import 'lesson_screen.dart';
+import 'images.dart';
+import 'utils.dart';
 
 class Lessons extends StatefulWidget {
   @override
@@ -15,30 +10,20 @@ class Lessons extends StatefulWidget {
 }
 
 class _LessonsState extends State<Lessons> {
-  var _booksJson = Map<String, dynamic>();
   var _bookList = List<dynamic>();
+
+  void loadAsync() async {
+    var bookList = await getBooklist('chs');
+    setState(() {
+      _bookList = bookList;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
 
-    if (_booksJson.keys.length == 0) {
-      parseJsonFromAssets('assets/json/books.json').then((books) {
-        var items = List<String>();
-        var lessons = List<String>();
-        for (var year in books['chs']['booklist']) {
-          lessons.add(year['title']);
-          for (var week in year['lessons']) {
-            items.add(week['id'] + ' ' + week['name']);
-          }
-        }
-
-        setState(() {
-          _booksJson = books;
-          _bookList = _booksJson['chs']['booklist'];
-        });
-      });
-    }
+    loadAsync();
   }
 
   @override
@@ -49,19 +34,27 @@ class _LessonsState extends State<Lessons> {
           var list = List<Widget>();
           for (var item in _bookList[index]['lessons']) {
             var data = item['name'].split(' ');
-            list.add(new Container(
+            list.add(
+              Container(
                 margin: const EdgeInsets.fromLTRB(15, 2, 5, 2),
-                decoration: new BoxDecoration(
-                    border: new Border.all(color: Colors.grey, width: 0.5),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 0.5),
                     borderRadius: BorderRadius.circular(10)),
                 child: ListTile(
-                    title: Text('${data[1]}'),
-                    subtitle: Text('${data[2]} ${data[0]}'),
-                    trailing: Image.asset(
-                      'assets/images/Materials.On.png',
-                      width: 34,
-                      height: 34,
-                    ))));
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LessonScreen(item['id'], data[1]),
+                      ),
+                    );
+                  },
+                  title: Text('${data[1]}'),
+                  subtitle: Text('${data[2]} ${data[0]}'),
+                  trailing: getIcon('Materials.On'),
+                ),
+              ),
+            );
           }
           return ExpansionTile(
             title: Text(_bookList[index]['title']),
@@ -69,17 +62,4 @@ class _LessonsState extends State<Lessons> {
           );
         });
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return ListView.builder(
-  //       itemCount: _items.length,
-  //       itemBuilder: (context, index) {
-  //         var data = _items[index].split(' ');
-  //         return ListTile(
-  //           title: Text('${data[2]}'),
-  //           subtitle: Text('${data[3]} ${data[1]}'),
-  //         );
-  //       });
-  // }
 }
