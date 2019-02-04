@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'bible_read_widget.dart';
+import 'bible_read_screen.dart';
 
 class BibleQuote extends StatefulWidget {
   final String _book;
